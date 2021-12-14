@@ -4,7 +4,13 @@ kind: StatefulSet
 metadata:
   name: {{ template "opensearch.uname" . }}
   labels:
-    {{- include "opensearch.labels" . | nindent 4 }}
+    heritage: {{ .Release.Service | quote }}
+    release: {{ .Release.Name | quote }}
+    chart: "{{ .Chart.Name }}"
+    app: "{{ template "opensearch.uname" . }}"
+    {{- range $key, $value := .Values.labels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
   annotations:
     majorVersion: "{{ include "opensearch.majorVersion" . }}"
 spec:
