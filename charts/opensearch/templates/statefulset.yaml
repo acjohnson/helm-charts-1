@@ -11,7 +11,9 @@ spec:
   serviceName: {{ template "opensearch.uname" . }}-headless
   selector:
     matchLabels:
-      {{- include "opensearch.selectorLabels" . | nindent 6 }}
+      release: {{ .Release.Name | quote }}
+      chart: "{{ .Chart.Name }}"
+      app: "{{ template "opensearch.uname" . }}"
   replicas: {{ .Values.replicas }}
   podManagementPolicy: {{ .Values.podManagementPolicy }}
   updateStrategy:
