@@ -103,14 +103,10 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
               matchExpressions:
-              - key: app.kubernetes.io/instance
+              - key: app
                 operator: In
                 values:
-                - {{ .Release.Name }}
-              - key: app.kubernetes.io/name
-                operator: In
-                values:
-                - {{ include "opensearch.name" . }}
+                - "{{ template "opensearch.uname" .}}"
             topologyKey: {{ .Values.antiAffinityTopologyKey }}
       {{- else if eq .Values.antiAffinity "soft" }}
         podAntiAffinity:
@@ -120,14 +116,10 @@ spec:
               topologyKey: {{ .Values.antiAffinityTopologyKey }}
               labelSelector:
                 matchExpressions:
-                - key: app.kubernetes.io/instance
+                - key: app
                   operator: In
                   values:
-                  - {{ .Release.Name }}
-                - key: app.kubernetes.io/name
-                  operator: In
-                  values:
-                  - {{ include "opensearch.name" . }}
+                  - "{{ template "opensearch.uname" . }}"
       {{- end }}
       {{- with .Values.nodeAffinity }}
         nodeAffinity:
